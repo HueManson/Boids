@@ -16,7 +16,6 @@ public class Boid : MonoBehaviour
     void Update()
     {
         Move(transform.right * moveSpeed);
-        Debug.Log(transform.position);
     }
 
     void Move(Vector3 velocity)

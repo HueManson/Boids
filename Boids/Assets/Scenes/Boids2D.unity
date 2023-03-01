@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 1101380574}
   - component: {fileID: 1101380573}
   - component: {fileID: 1101380572}
+  - component: {fileID: 1101380575}
   m_Layer: 0
   m_Name: boid
   m_TagString: Untagged
@@ -295,10 +296,30 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101380571}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.3, y: -0.07, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.19476882, w: 0.9808492}
+  m_LocalPosition: {x: -12.75, y: -3.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 22.462}
+--- !u!114 &1101380575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101380571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1b2db544ea0e45f1957f911ecf47f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewRadius: 2.21
+  viewAngle: 136
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 0
+  obsticleMask:
+    serializedVersion: 2
+    m_Bits: 0
