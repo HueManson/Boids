@@ -8,11 +8,32 @@ public class FieldOfView : MonoBehaviour
     [Range(0,360)]
     public float viewAngle;
 
-    public LayerMask targetMask;
+    public LayerMask boidMask;
     public LayerMask obsticleMask;
 
-    void FindVisibileTargets()
+    public List<Transform> visibleBoids = new List<Transform>();
+
+    void FindVisibileBoids()
     {
+        visibleBoids.Clear();
+        Collider[] boidsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, boidMask);
+
+        for (int i=0; i<boidsInViewRadius.Length; i++)
+        {
+            Transform targetBoid = boidsInViewRadius[i].transform;
+            Vector3 dirToBoid = (transform.position - targetBoid.position).normalized;
+            //check if boid is within view anlge
+            if(Vector3.Angle(transform.forward, dirToBoid) < viewAngle/2)
+            {
+                float distToTargetBoid = Vector3.Distance(transform.position, targetBoid.position);
+                //check no obsticle is between
+                if(!Physics.Raycast(transform.position, dirToBoid, distToTargetBoid, obsticleMask))
+                {
+                    visibleBoids.Add(targetBoid);
+                }
+            }
+        }
+
 
     }
 
