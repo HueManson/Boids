@@ -23,7 +23,7 @@ public class Boid : MonoBehaviour
 
     void Update()
     {
-        Move(transform.right * moveSpeed);
+        Move(transform.up * moveSpeed);
     }
 
     //Move
