@@ -5,11 +5,15 @@ using UnityEngine;
 public class Simulator : MonoBehaviour
 {
     public LayerMask obsticleMask;
+    public GameObject obsticlePrefab;
+    public Vector2 obsticleScaleMinMax;
+    public float scaleStepSize;
 
     Vector2 halfscreenWidthInWorldUnits;
     Vector2 dragOffset;
     Transform draggedObject;
     bool dragging;
+    
 
     void Start()
     {
@@ -39,8 +43,7 @@ public class Simulator : MonoBehaviour
 
             if (!MouseOverObsticle(out hit))
             {
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.position = new Vector3(mousePos.x, mousePos.y, 0);
+                GenerateObsticle(mousePos);
             }
             else
             {
@@ -64,6 +67,16 @@ public class Simulator : MonoBehaviour
         }
     }
 
+    void GenerateObsticle(Vector2 position)
+    {
+        GameObject obsticle = Instantiate(obsticlePrefab, position, Quaternion.Euler(0f, 0f, Random.Range(0, 360)));
+
+
+
+        obsticle.transform.localScale = new Vector3(RandomStep(obsticleScaleMinMax.x, obsticleScaleMinMax.y, scaleStepSize), RandomStep(obsticleScaleMinMax.x * 2, obsticleScaleMinMax.y * 2, scaleStepSize), 1f);
+        obsticle.transform.parent = this.transform;//purely to keep the editor clean
+    }
+
     bool MouseOverObsticle(out RaycastHit hit)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -74,4 +87,14 @@ public class Simulator : MonoBehaviour
         }
         return false;
     }
+
+    float RandomStep(float min, float max, float stepSize)
+    {
+        float random = Random.Range(min, max);
+        float numSteps = Mathf.Floor(random / stepSize);
+        float adjustedRandom = numSteps * stepSize;
+
+        return adjustedRandom;
+    }
+
 }

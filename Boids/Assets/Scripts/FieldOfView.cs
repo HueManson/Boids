@@ -17,8 +17,8 @@ public class FieldOfView : MonoBehaviour
 
     [HideInInspector]
     public List<Transform> visibleTargets = new List<Transform>();
-    public MeshFilter viewMeshFilter;
 
+    public MeshFilter viewMeshFilter;
     Mesh viewMesh;
 
     void Start()
