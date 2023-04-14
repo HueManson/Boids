@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenerateCone : MonoBehaviour
+public class ConeGenerator : MonoBehaviour
 {
     public float lengthToRadiusRatio;
     public float scale;
@@ -20,6 +20,8 @@ public class GenerateCone : MonoBehaviour
         coneVizualizer.transform.parent = this.transform;
         coneVizualizer.transform.localPosition = Vector3.zero;
         coneVizualizer.transform.localRotation = Quaternion.identity;
+        BoxCollider collider = gameObject.AddComponent<BoxCollider>();
+        collider.size = Vector3.up * scale * lengthToRadiusRatio + Vector3.right * scale + Vector3.forward * scale; 
 
         //create mesh
         coneMeshFilter = coneVizualizer.AddComponent<MeshFilter>();
@@ -30,6 +32,7 @@ public class GenerateCone : MonoBehaviour
         coneRenderer.material = coneMaterial;
 
         GenerateConeMesh();
+        //coneVizualizer.AddComponent<MeshCollider>();
     }
 
     void GenerateConeMesh()
