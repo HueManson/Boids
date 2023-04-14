@@ -106,7 +106,7 @@ public class FieldOfView : MonoBehaviour
     void FindVisibileTargets()
     {
         visibleTargets.Clear();
-        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, boidMask);
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, boidMask);//picks up colliders
 
         for (int i=0; i<targetsInViewRadius.Length; i++)
         {

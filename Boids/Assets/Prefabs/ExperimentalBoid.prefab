@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3266071842857801982
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3266071842857801968}
+  - component: {fileID: 3266071842857801969}
+  m_Layer: 0
+  m_Name: ExperimentalBoid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3266071842857801968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3266071842857801982}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.1284204, y: -2.8678195, z: 0.07187991}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3266071842857801969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3266071842857801982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbbcb2a92827b42b782174de73bb7806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isVisualized: 0
+  seperation: 0
+  alignment: 0
+  cohesion: 0
+  hasTarget: 0
+  moveSpeed: 0
+  turnRadius: 0
+  viewAngle: 60
+  viewRadius: 3.85
+  meshResolution: 1
+  edgeDistThreashold: 0.5
+  edgeResolution: 6
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 64
+  obsticleMask:
+    serializedVersion: 2
+    m_Bits: 128
+  boidMaterial: {fileID: 2100000, guid: 30ccf9d705ffc4c00a72c6d8813f46b4, type: 2}
+  vizMaterial: {fileID: 2100000, guid: 6a20e64514721452ea8bd65672c737c4, type: 2}

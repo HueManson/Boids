@@ -2,15 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshRenderer))]
 public class Boid : MonoBehaviour
 {
-    Camera boundingCamera;
-
+    public bool isVisualized;
     public float moveSpeed;
     public float turnRadius;
-    public bool onDisplay;
     public bool hasTarget;
 
     [Header("Boid Behavior")]
@@ -18,18 +14,11 @@ public class Boid : MonoBehaviour
     public bool alignment;
     public bool cohesion;
 
-    Mesh boidMesh;
-    MeshFilter boidMeshFilter;
-
+    Camera boundingCamera;
 
     void Start()
     {
         boundingCamera = Camera.main;
-        //boidMeshFilter = GetComponent<MeshFilter>();
-        boidMesh = new Mesh();
-        boidMesh.name = "BoidMesh";
-        boidMeshFilter.mesh = boidMesh;
-        //GenerateBoidMesh();
     }
 
     void Update()
@@ -37,11 +26,6 @@ public class Boid : MonoBehaviour
         Move(transform.up * moveSpeed);
     }
 
-    //Move
-    //Boid behavior
-    //#1    seperation::avoid collision with nearby boids
-    //#2    alignment::move in the same direction as nearby boids
-    //#3    cohesion::aim for the center of the group
     void Move(Vector3 velocity)
     {
         transform.position += velocity * Time.deltaTime;
@@ -93,22 +77,5 @@ public class Boid : MonoBehaviour
 
         Vector3 newPos = camera.ViewportToWorldPoint(viewportPos);
         transform.position = newPos;
-    }
-
-    void GenerateBoidMesh()
-    {
-
-        boidMesh.Clear();
-        boidMesh.vertices = new Vector3[]
-        {
-            Vector3.zero,
-            Vector3.right,
-            Vector3.up
-        };
-        boidMesh.triangles = new int[]
-        {
-            0, 1, 2
-        };
-        boidMesh.RecalculateNormals();
     }
 }
