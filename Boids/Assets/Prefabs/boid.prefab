@@ -178,3 +178,6 @@ MonoBehaviour:
   scale: 0.5
   vertexCount: 1000
   coneMaterial: {fileID: 2100000, guid: 30ccf9d705ffc4c00a72c6d8813f46b4, type: 2}
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 64

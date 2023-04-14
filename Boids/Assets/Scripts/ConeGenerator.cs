@@ -8,6 +8,7 @@ public class ConeGenerator : MonoBehaviour
     public float scale;
     public int vertexCount;
     public Material coneMaterial;
+    public LayerMask targetMask;
 
     Mesh coneMesh;
     MeshFilter coneMeshFilter;
@@ -20,8 +21,6 @@ public class ConeGenerator : MonoBehaviour
         coneVizualizer.transform.parent = this.transform;
         coneVizualizer.transform.localPosition = Vector3.zero;
         coneVizualizer.transform.localRotation = Quaternion.identity;
-        BoxCollider collider = gameObject.AddComponent<BoxCollider>();
-        collider.size = Vector3.up * scale * lengthToRadiusRatio + Vector3.right * scale + Vector3.forward * scale; 
 
         //create mesh
         coneMeshFilter = coneVizualizer.AddComponent<MeshFilter>();
@@ -32,7 +31,9 @@ public class ConeGenerator : MonoBehaviour
         coneRenderer.material = coneMaterial;
 
         GenerateConeMesh();
-        //coneVizualizer.AddComponent<MeshCollider>();
+        coneVizualizer.AddComponent<MeshCollider>();
+        //thank you https://answers.unity.com/questions/1288179/layer-layermask-which-is-set-in-inspector.html
+        coneVizualizer.layer = (int) Mathf.Log(targetMask.value, 2);
     }
 
     void GenerateConeMesh()
