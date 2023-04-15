@@ -23,6 +23,8 @@ public class BoidsManager : MonoBehaviour
 
     List<GameObject> boids = new List<GameObject>();
     Vector2 halfscreenWidthInWorldUnits;
+    FieldOfView visualizedBoid;
+    bool seeing;
 
     void Start()
     {
@@ -34,5 +36,21 @@ public class BoidsManager : MonoBehaviour
             boid.transform.parent = transform;
             boids.Add(boid);
         }
+    }
+
+    void Update()
+    {
+        if(isVisualized && !seeing)
+        {
+            visualizedBoid = boids[Random.Range(0, boids.Count)].GetComponent<FieldOfView>();
+            visualizedBoid.isVisualized = true;
+            seeing = true;
+        }
+        else if(!isVisualized && seeing)
+        {   
+            visualizedBoid.isVisualized = false;
+            seeing = false;
+        }
+        
     }
 }

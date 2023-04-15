@@ -19,7 +19,7 @@ public class ConeGenerator : MonoBehaviour
         //create child to hold mesh
         GameObject coneVizualizer = new GameObject("ConeVizualizer");
         coneVizualizer.transform.parent = this.transform;
-        coneVizualizer.transform.localPosition = Vector3.zero;
+        coneVizualizer.transform.localPosition = Vector3.back * .001f;//offset form Vector3.zero so boid is rendered on top of its fov. uses sphere collider so this is okay 
         coneVizualizer.transform.localRotation = Quaternion.identity;
 
         //create mesh
@@ -29,6 +29,12 @@ public class ConeGenerator : MonoBehaviour
         coneMesh.name = "coneMesh";
         coneMeshFilter.mesh = coneMesh;
         coneRenderer.material = coneMaterial;
+
+        //set color
+        Color color = coneRenderer.material.color;
+        float colorIntensity = (color.r + color.g + color.b) / 3f;
+        float factor = colorIntensity + Random.Range(colorIntensity * .7f, colorIntensity * 1.7f);
+        coneRenderer.material.color = new Color(color.r, color.g * factor, color.b, color.a);
 
         GenerateConeMesh();
         coneVizualizer.AddComponent<MeshCollider>();

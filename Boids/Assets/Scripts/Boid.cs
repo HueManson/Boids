@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Boid : MonoBehaviour
 {
-    public bool isVisualized;
     public float moveSpeed;
     public float turnRadius;
     public bool hasTarget;
@@ -51,7 +50,7 @@ public class Boid : MonoBehaviour
 
     }
 
-    //OnBecomeInvisible
+    //OnBecomeInvisible -- requires renderer to be triggered
     //note::the editor camera will activate OnBecameInvisible() and OnBecameVisible() (any camera will trigger them)
     public void OnBecameInvisible()
     {
@@ -68,11 +67,11 @@ public class Boid : MonoBehaviour
         //note::everything in the cameras viewport in [0,1] (with pos being < 0 or > 1 indicating it is off screne) (.5, .5) is the cameras center.
         if (viewportPos.x > 1 || viewportPos.x < 0)
         {
-            viewportPos.x = Mathf.Clamp(0.5f - viewportPos.x, 0,1);
+            viewportPos.x = 1 - viewportPos.x;
         }
         if (viewportPos.y > 1 || viewportPos.y < 0)
         {
-            viewportPos.y = Mathf.Clamp(0.5f - viewportPos.y, 0,1);
+            viewportPos.y = 1 - viewportPos.y;
         }
 
         Vector3 newPos = camera.ViewportToWorldPoint(viewportPos);

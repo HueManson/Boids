@@ -5,6 +5,7 @@ using UnityEngine;
 //Thank you https://www.youtube.com/watch?v=rQG9aUWarwE&ab_channel=SebastianLague
 public class FieldOfView : MonoBehaviour
 {
+    public bool isVisualized;
     [Range(0, 360)]
     public float viewAngle;
     public float viewRadius;
@@ -31,7 +32,14 @@ public class FieldOfView : MonoBehaviour
 
     void LateUpdate()
     {
-        DrawFieldOfView();
+        if (isVisualized)
+        {
+            DrawFieldOfView();
+        }
+        else
+        {
+            viewMesh.Clear();
+        }
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
