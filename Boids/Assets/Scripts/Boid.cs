@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class Boid : MonoBehaviour
 {
-    public float moveSpeed;
     public float turnRadius;
     public bool hasTarget;
-
-    [Header("Boid Behavior")]
-    public bool seperation;
-    public bool alignment;
-    public bool cohesion;
 
     Camera boundingCamera;
 
@@ -20,34 +14,45 @@ public class Boid : MonoBehaviour
         boundingCamera = Camera.main;
     }
 
-    void Update()
+    public void Move(Vector3 velocity)
     {
-        Move(transform.up * moveSpeed);
-    }
-
-    void Move(Vector3 velocity)
-    {
+        transform.up = velocity / velocity.magnitude;
         transform.position += velocity * Time.deltaTime;
-
-        if(seperation)
-            seperate();
-        if (alignment)
-            align();
-        if(cohesion)
-            cohere();
     }
 
-    public void seperate()
+    public Vector3 seperate(List<Transform> visibleTargets)
     {
+        Vector3 seperationDir = Vector3.zero;
 
+        foreach(Transform target in visibleTargets)
+        {
+            float dist = (target.position - transform.position).magnitude;
+            seperationDir -= (target.position - transform.position) * 1/dist;
+        }
+
+        return seperationDir;
     }
-    public void align()
+    public Vector3 align(List<Transform> visibleTargets)
     {
+        Vector3 averageDir = Vector3.zero;
 
+        foreach(Transform target in visibleTargets)
+        {
+            averageDir += target.up;
+        }
+
+        return averageDir / visibleTargets.Count;
     }
-    public void cohere()
+    public Vector3 cohere(List<Transform> visibleTargets)
     {
+        Vector3 avgCenter = transform.position;
 
+        foreach(Transform target in visibleTargets)
+        {
+            avgCenter += target.position;
+        }
+
+        return avgCenter / visibleTargets.Count;
     }
 
     //OnBecomeInvisible -- requires renderer to be triggered
@@ -75,6 +80,12 @@ public class Boid : MonoBehaviour
         }
 
         Vector3 newPos = camera.ViewportToWorldPoint(viewportPos);
-        transform.position = newPos;
+        transform.position = newPos; 
     }
+    //thank you https://forum.unity.com/threads/rotate-object-on-z-axis-to-look-at-vector3.444718/
+    public static float SignedAngleTo(Vector3 fromVector, Vector3 toVector, Vector3 relativeUp) {
+     return Mathf.Atan2(
+       Vector3.Dot(relativeUp.normalized, Vector3.Cross(fromVector, toVector)),
+       Vector3.Dot(fromVector, toVector)) * Mathf.Rad2Deg;
+   }
 }

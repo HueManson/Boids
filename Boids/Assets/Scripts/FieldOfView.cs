@@ -12,6 +12,7 @@ public class FieldOfView : MonoBehaviour
     public float meshResolution;
     public float edgeDistThreashold;
     public int edgeResolution;
+    public int obsticleAvoidenceFidelity;
 
     public LayerMask boidMask;
     public LayerMask obsticleMask;
@@ -127,6 +128,7 @@ public class FieldOfView : MonoBehaviour
                 //check no obsticle is between
                 if(!Physics.Raycast(transform.position, dirToTarget, distToTargetBoid, obsticleMask))
                 {
+                    //visibleTargets.Add(new TargetInfo(target));
                     visibleTargets.Add(target);
                 }
             }
@@ -184,6 +186,51 @@ public class FieldOfView : MonoBehaviour
         return new EdgeInfo(minPoint, maxPoint);
     }
 
+    public Vector3 FindClearPath()
+    {
+        if(Physics.Raycast(transform.position, transform.up, viewRadius, obsticleMask))
+        {
+            Debug.Log("obstice found");
+            Vector3 lookDir = transform.up;
+            int stepCount = Mathf.RoundToInt(viewAngle * obsticleAvoidenceFidelity);
+            float stepAngleSize = viewAngle / stepCount;
+
+            for(int i = 1; i < stepCount; i++)
+            {
+                float angle = transform.eulerAngles.z - viewAngle / 2 + stepAngleSize * i;
+                Vector3 posLookDir = Quaternion.AngleAxis(angle, Vector3.forward) * lookDir;
+                Vector3 negLookDir = Quaternion.AngleAxis(angle, Vector3.back) * lookDir;
+
+                Debug.Log("Pos dir " + posLookDir);
+                Debug.Log("Neg dir " + negLookDir);
+
+                Debug.DrawRay(transform.position, posLookDir, Color.red, viewRadius);
+                Debug.DrawRay(transform.position, negLookDir, Color.yellow, viewRadius);
+                
+                if(!Physics.Raycast(transform.position, posLookDir, viewRadius, obsticleMask))
+                {
+                    Debug.Log("left");
+                    return posLookDir;
+                }
+                if(!Physics.Raycast(transform.position, posLookDir, viewRadius, obsticleMask))
+                {
+                    Debug.Log("right");
+                    return negLookDir;
+                }
+                if(i == stepCount - 1)
+                {
+                    return negLookDir;
+                }
+            }
+        }
+        return Vector3.zero;
+    }
+
+    public bool HeadingForCollision()
+    {
+        return Physics.Raycast(transform.position, transform.up, viewRadius, obsticleMask);
+    }
+
     public struct ViewCastInfo
     {
         public bool hit;
@@ -211,5 +258,19 @@ public class FieldOfView : MonoBehaviour
             pointB = pointB_;
         }
          
+    }
+
+    public struct TargetInfo
+    {
+        public Transform targetTransform;
+        public Vector3 moveDir;
+        //public float dist;
+
+        public TargetInfo(Transform targetTransform_)
+        {
+            targetTransform = targetTransform_;
+            moveDir = targetTransform_.up;
+            //dist = Vector3.Distance(transform,targetTransform_);
+        }        
     }
 }

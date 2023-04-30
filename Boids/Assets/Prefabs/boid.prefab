@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8341114075251608551}
   - component: {fileID: 8207822874619335014}
   m_Layer: 6
-  m_Name: Boid
+  m_Name: boid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,12 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dd62b818f3a44f36838d7be6af17212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
   turnRadius: 0
   hasTarget: 0
-  seperation: 0
-  alignment: 0
-  cohesion: 0
 --- !u!114 &8341114075251608555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,10 +147,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isVisualized: 0
   viewAngle: 281
-  viewRadius: 3.85
+  viewRadius: 1.59
   meshResolution: 1
   edgeDistThreashold: 0.5
   edgeResolution: 6
+  obsticleAvoidenceFidelity: 6
   boidMask:
     serializedVersion: 2
     m_Bits: 64
