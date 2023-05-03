@@ -21,6 +21,9 @@ public class BoidsDriver : MonoBehaviour
     public float viewAngle;
     public float viewRadius;
 
+    [Header("Foce Weights")]
+    public float avoidForceWeight;
+
     BoidInstance[] boids;
     Vector2 halfscreenWidthInWorldUnits;
     FieldOfView visualizedBoid;
@@ -88,7 +91,7 @@ public class BoidsDriver : MonoBehaviour
         if(boid.fov.HeadingForCollision())
         {
             Vector3 avoidForce = SteerTowards(velocity, boid.fov.FindClearPath());
-            acceleration += avoidForce * 1000f;
+            acceleration += avoidForce * avoidForceWeight;
         }
 
         velocity += acceleration * Time.deltaTime;

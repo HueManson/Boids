@@ -188,41 +188,32 @@ public class FieldOfView : MonoBehaviour
 
     public Vector3 FindClearPath()
     {
-        if(Physics.Raycast(transform.position, transform.up, viewRadius, obsticleMask))
+        Debug.Log("obstice found");
+        int stepCount = Mathf.RoundToInt(viewAngle * obsticleAvoidenceFidelity);
+        float stepAngleSize = viewAngle / stepCount;
+
+        for(int i = 1; i < stepCount; i++)
         {
-            Debug.Log("obstice found");
             Vector3 lookDir = transform.up;
-            int stepCount = Mathf.RoundToInt(viewAngle * obsticleAvoidenceFidelity);
-            float stepAngleSize = viewAngle / stepCount;
+            float angle = stepAngleSize * i;
+            Debug.Log(angle);
 
-            for(int i = 1; i < stepCount; i++)
+            Vector3 posLookDir = Quaternion.AngleAxis(angle, Vector3.forward) * lookDir;
+            Vector3 negLookDir = Quaternion.AngleAxis(angle, Vector3.back) * lookDir;
+
+            Debug.DrawRay(transform.position, posLookDir, Color.yellow, viewRadius);
+            Debug.DrawRay(transform.position, negLookDir, Color.yellow, viewRadius);
+            
+            if(!Physics.Raycast(transform.position, posLookDir, viewRadius, obsticleMask))
             {
-                float angle = transform.eulerAngles.z - viewAngle / 2 + stepAngleSize * i;
-                Vector3 posLookDir = Quaternion.AngleAxis(angle, Vector3.forward) * lookDir;
-                Vector3 negLookDir = Quaternion.AngleAxis(angle, Vector3.back) * lookDir;
-
-                Debug.Log("Pos dir " + posLookDir);
-                Debug.Log("Neg dir " + negLookDir);
-
-                Debug.DrawRay(transform.position, posLookDir, Color.red, viewRadius);
-                Debug.DrawRay(transform.position, negLookDir, Color.yellow, viewRadius);
-                
-                if(!Physics.Raycast(transform.position, posLookDir, viewRadius, obsticleMask))
-                {
-                    Debug.Log("left");
-                    return posLookDir;
-                }
-                if(!Physics.Raycast(transform.position, posLookDir, viewRadius, obsticleMask))
-                {
-                    Debug.Log("right");
-                    return negLookDir;
-                }
-                if(i == stepCount - 1)
-                {
-                    return negLookDir;
-                }
+                return posLookDir;
+            }
+            if(!Physics.Raycast(transform.position, negLookDir, viewRadius, obsticleMask))
+            {
+                return negLookDir;
             }
         }
+        Debug.Log("no solutions found");
         return Vector3.zero;
     }
 
@@ -273,4 +264,10 @@ public class FieldOfView : MonoBehaviour
             //dist = Vector3.Distance(transform,targetTransform_);
         }        
     }
+
+    public static float SignedAngleTo(Vector3 fromVector, Vector3 toVector, Vector3 relativeUp) {
+     return Mathf.Atan2(
+       Vector3.Dot(relativeUp.normalized, Vector3.Cross(fromVector, toVector)),
+       Vector3.Dot(fromVector, toVector)) * Mathf.Rad2Deg;
+   }
 }

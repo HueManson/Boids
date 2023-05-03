@@ -151,7 +151,7 @@ MonoBehaviour:
   meshResolution: 1
   edgeDistThreashold: 0.5
   edgeResolution: 6
-  obsticleAvoidenceFidelity: 6
+  obsticleAvoidenceFidelity: 1
   boidMask:
     serializedVersion: 2
     m_Bits: 64

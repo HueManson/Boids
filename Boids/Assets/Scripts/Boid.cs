@@ -16,7 +16,7 @@ public class Boid : MonoBehaviour
 
     public void Move(Vector3 velocity)
     {
-        transform.up = velocity / velocity.magnitude;
+        transform.up = velocity.normalized;
         transform.position += velocity * Time.deltaTime;
     }
 
