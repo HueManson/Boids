@@ -486,7 +486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8009aaf242bce4f98832c8035fe7a57d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boidCount: 100
+  boidCount: 10
   isVisualized: 0
   boidPrefab: {fileID: 8341114075251608556, guid: a0ae3059ac83148aeaf8e4b2cd36498f, type: 3}
   seperation: 0
@@ -498,9 +498,9 @@ MonoBehaviour:
   viewAngle: 0
   viewRadius: 0
   avoidForceWeight: 100
-  seperationForceWeight: 100
+  seperationForceWeight: 3
   alignmentForceWeight: 10
-  cohesionForceWeight: 0
+  cohesionForceWeight: 10
 --- !u!4 &723028194
 Transform:
   m_ObjectHideFlags: 0

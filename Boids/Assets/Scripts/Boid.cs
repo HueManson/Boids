@@ -46,19 +46,18 @@ public class Boid : MonoBehaviour
         return averageDir / visibleTargets.Count;
     }
     public Vector3 Cohere(List<Transform> visibleTargets)
-    {
+    {   
         Vector3 avgCenter = Vector3.zero;
 
         foreach(Transform target in visibleTargets)
         {
             avgCenter += target.position;
         }
-        avgCenter /= visibleTargets.Count;
-        avgCenter.z = 0;
-
-        Debug.Log(avgCenter);
         
-        return avgCenter;
+        avgCenter /= visibleTargets.Count;
+        avgCenter.z = 0;//avg center from origin
+
+        return avgCenter - transform.position;//subtract to get avgCenter from current boid
     }
 
     //OnBecomeInvisible -- requires renderer to be triggered

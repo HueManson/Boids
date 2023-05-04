@@ -76,17 +76,17 @@ public class BoidsDriver : MonoBehaviour
         {
             if(seperation)
             {
-                Vector3 seperationForce = boid.boidBehavior.Seperate(boid.fov.visibleTargets) * turnRadius;
+                Vector3 seperationForce = SteerTowards(velocity, boid.boidBehavior.Seperate(boid.fov.visibleTargets) * turnRadius);
                 acceleration += seperationForce * seperationForceWeight;
             }
             if (alignment)
             {
-                Vector3 alignmentForce = boid.boidBehavior.Align(boid.fov.visibleTargets) * turnRadius;
+                Vector3 alignmentForce = SteerTowards(velocity, boid.boidBehavior.Align(boid.fov.visibleTargets) * turnRadius);
                 acceleration += alignmentForce *alignmentForceWeight;
             }
             if(cohesion && boid.fov.visibleTargets.Count > 0)
             {
-                Vector3 cohesionForce = boid.boidBehavior.Cohere(boid.fov.visibleTargets) * turnRadius;
+                Vector3 cohesionForce = SteerTowards(velocity, boid.boidBehavior.Cohere(boid.fov.visibleTargets) * turnRadius);
                 acceleration += cohesionForce * cohesionForceWeight;
             }
         }
