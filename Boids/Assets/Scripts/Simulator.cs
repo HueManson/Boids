@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Simulator : MonoBehaviour
 {
@@ -8,16 +9,37 @@ public class Simulator : MonoBehaviour
     public GameObject obsticlePrefab;
     public Vector2 obsticleScaleMinMax;
     public float scaleStepSize;
+    public GameObject boidManager;
 
-    Vector2 halfscreenWidthInWorldUnits;
+    [Header("TExt")]
+    public Text onScreenHelp;
+    public Text wallText;
+    public Text seperationText;
+    public Text alignmentText;
+    public Text cohesionText;
+    public Text helpText;
+    public Image textImage;
+
     Vector2 dragOffset;
     Transform draggedObject;
     bool dragging;
+    bool toggleWalls;
+    bool toggleMenu;
+    GameObject[] walls;
+    BoidsDriver driver;
     
 
     void Start()
     {
-        Vector2 halfscreenWidthInWorldUnits = new Vector2(Camera.main.aspect * Camera.main.orthographicSize, Camera.main.orthographicSize);
+        walls = new GameObject[4];
+        toggleWalls = true;
+        toggleMenu = false;
+        driver = boidManager.GetComponent<BoidsDriver>();
+
+        seperationText.color = Color.red;
+        alignmentText.color = Color.red;
+        cohesionText.color = Color.red;
+        wallText.color = Color.red;
     }
 
     void Update()
@@ -65,6 +87,63 @@ public class Simulator : MonoBehaviour
         {
             dragging = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            if(toggleWalls)
+            {
+                BuildWalls();
+                wallText.color = Color.green;
+            }
+            else
+            {
+                BreakWalls();
+                wallText.color = Color.red;
+            }
+            toggleWalls = !toggleWalls;
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            driver.seperation = !driver.seperation;
+            seperationText.color = driver.seperation ? Color.green : Color.red; 
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            driver.alignment = !driver.alignment;
+            alignmentText.color = driver.alignment ? Color.green : Color.red;
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            driver.cohesion = !driver.cohesion;
+            cohesionText.color = driver.cohesion ? Color.green : Color.red;
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            if(toggleMenu)
+            {
+                helpText.text = "Hide help menu [press h]";
+                onScreenHelp.text = "Add/drag obsticle [left click]\nRemove obsticle [right click]";
+                wallText.text = "Toggle boundry [press b]";
+                seperationText.text = "Toggle seperation [press s]";
+                alignmentText.text =  "Toggle alignment [press a]";
+                cohesionText.text = "Toggle cohesion [press c]";
+                textImage.enabled = true;
+            }
+            else
+            {
+                helpText.text = "Show help menu [press h]";
+                onScreenHelp.text = "";
+                wallText.text = "";
+                seperationText.text = "";
+                alignmentText.text =  "";
+                cohesionText.text = "";
+                textImage.enabled = false;
+            }
+            toggleMenu = !toggleMenu;
+        }
+
+
     }
 
     void GenerateObsticle(Vector2 position)
@@ -95,6 +174,40 @@ public class Simulator : MonoBehaviour
         float adjustedRandom = numSteps * stepSize;
 
         return adjustedRandom;
+    }
+
+    void BuildWalls()
+    {
+        Vector2 halfscreenWidthInWorldUnits = new Vector2(Camera.main.aspect * Camera.main.orthographicSize, Camera.main.orthographicSize);
+        float thickness = 1f;
+        Vector2 hotizontalPos = Vector2.zero;
+        hotizontalPos.x = halfscreenWidthInWorldUnits.x + thickness/2;
+        Vector3 horizontalScale = new Vector3(thickness, halfscreenWidthInWorldUnits.y * 2, 0);
+
+        GameObject leftHorizontal = Instantiate(obsticlePrefab, -hotizontalPos, Quaternion.identity);
+        GameObject rightHorizontal = Instantiate(obsticlePrefab, hotizontalPos, Quaternion.identity);
+        leftHorizontal.transform.localScale = horizontalScale;
+        rightHorizontal.transform.localScale = horizontalScale;
+
+        Vector2 voticalPos = Vector2.zero;
+        voticalPos.y = halfscreenWidthInWorldUnits.y + thickness/2;
+        Vector3 verticalScale = new Vector3(halfscreenWidthInWorldUnits.x * 2, thickness, 0);
+
+        GameObject upperVertical = Instantiate(obsticlePrefab, voticalPos, Quaternion.identity);
+        GameObject lowwerVertical = Instantiate(obsticlePrefab, -voticalPos, Quaternion.identity);
+        upperVertical.transform.localScale = verticalScale;
+        lowwerVertical.transform.localScale = verticalScale;
+
+        walls = new GameObject[] {leftHorizontal, rightHorizontal, upperVertical, lowwerVertical};
+    }
+
+    void BreakWalls()
+    {
+        foreach (GameObject wall in walls)
+        {
+            Destroy(wall);
+        }
+
     }
 
 }

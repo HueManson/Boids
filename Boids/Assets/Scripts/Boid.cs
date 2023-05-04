@@ -23,15 +23,23 @@ public class Boid : MonoBehaviour
     public Vector3 Seperate(List<Transform> visibleTargets)
     {
         Vector3 seperationDir = Vector3.zero;
+        float minDist = float.MaxValue;
+        Vector3 minDir = Vector3.zero;
 
         foreach(Transform target in visibleTargets)
         {
             float dist = (target.position - transform.position).magnitude;
+            if(dist < minDist)
+            {
+                minDist = dist;
+                minDir = target.position - transform.position;
+            }
             seperationDir -= (target.position - transform.position) * 1/dist;
         }
-
+        //break clumping
+        seperationDir += minDir;
         seperationDir.z = 0;
-
+        
         return seperationDir;
     }
     public Vector3 Align(List<Transform> visibleTargets)

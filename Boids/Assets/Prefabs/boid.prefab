@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lengthToRadiusRatio: 1.5
-  scale: 0.25
+  scale: 0.15
   vertexCount: 1000
   coneMaterial: {fileID: 2100000, guid: 30ccf9d705ffc4c00a72c6d8813f46b4, type: 2}
   targetMask:

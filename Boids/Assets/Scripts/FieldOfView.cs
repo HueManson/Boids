@@ -17,7 +17,7 @@ public class FieldOfView : MonoBehaviour
     public LayerMask boidMask;
     public LayerMask obsticleMask;
 
-    // [HideInInspector]
+    [HideInInspector]
     public List<Transform> visibleTargets = new List<Transform>();
 
     public MeshFilter viewMeshFilter;
