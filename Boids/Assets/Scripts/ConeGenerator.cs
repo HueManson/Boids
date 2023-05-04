@@ -14,7 +14,7 @@ public class ConeGenerator : MonoBehaviour
     MeshFilter coneMeshFilter;
     MeshRenderer coneRenderer;
 
-    void Start()
+    void Awake() 
     {
         //create child to hold mesh
         GameObject coneVizualizer = new GameObject("ConeVizualizer");

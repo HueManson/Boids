@@ -20,7 +20,7 @@ public class Boid : MonoBehaviour
         transform.position += velocity * Time.deltaTime;
     }
 
-    public Vector3 seperate(List<Transform> visibleTargets)
+    public Vector3 Seperate(List<Transform> visibleTargets)
     {
         Vector3 seperationDir = Vector3.zero;
 
@@ -30,9 +30,11 @@ public class Boid : MonoBehaviour
             seperationDir -= (target.position - transform.position) * 1/dist;
         }
 
+        seperationDir.z = 0;
+
         return seperationDir;
     }
-    public Vector3 align(List<Transform> visibleTargets)
+    public Vector3 Align(List<Transform> visibleTargets)
     {
         Vector3 averageDir = Vector3.zero;
 
@@ -43,16 +45,20 @@ public class Boid : MonoBehaviour
 
         return averageDir / visibleTargets.Count;
     }
-    public Vector3 cohere(List<Transform> visibleTargets)
+    public Vector3 Cohere(List<Transform> visibleTargets)
     {
-        Vector3 avgCenter = transform.position;
+        Vector3 avgCenter = Vector3.zero;
 
         foreach(Transform target in visibleTargets)
         {
             avgCenter += target.position;
         }
+        avgCenter /= visibleTargets.Count;
+        avgCenter.z = 0;
 
-        return avgCenter / visibleTargets.Count;
+        Debug.Log(avgCenter);
+        
+        return avgCenter;
     }
 
     //OnBecomeInvisible -- requires renderer to be triggered

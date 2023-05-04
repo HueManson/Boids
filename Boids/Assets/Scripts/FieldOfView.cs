@@ -17,11 +17,12 @@ public class FieldOfView : MonoBehaviour
     public LayerMask boidMask;
     public LayerMask obsticleMask;
 
-    [HideInInspector]
+    // [HideInInspector]
     public List<Transform> visibleTargets = new List<Transform>();
 
     public MeshFilter viewMeshFilter;
     Mesh viewMesh;
+    GameObject cahedMeshCollider;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class FieldOfView : MonoBehaviour
         viewMesh = new Mesh();
         viewMesh.name = "ViewMesh";
         viewMeshFilter.mesh = viewMesh;
+        cahedMeshCollider = this.GetComponentInChildren<MeshCollider>().gameObject;
     }
 
     void LateUpdate()
@@ -119,8 +121,15 @@ public class FieldOfView : MonoBehaviour
 
         for (int i=0; i<targetsInViewRadius.Length; i++)
         {
+            // is picking self up as visible target. This check is complicated because the collider is not on this
+            if(targetsInViewRadius[i].gameObject == cahedMeshCollider)
+            {
+                continue;
+            }
+
             Transform target = targetsInViewRadius[i].transform;
             Vector3 dirToTarget = (target.position - transform.position).normalized;
+
             //check if target is within view anlge
             if(Vector3.Angle(transform.up, dirToTarget) < viewAngle/2)
             {
@@ -128,7 +137,6 @@ public class FieldOfView : MonoBehaviour
                 //check no obsticle is between
                 if(!Physics.Raycast(transform.position, dirToTarget, distToTargetBoid, obsticleMask))
                 {
-                    //visibleTargets.Add(new TargetInfo(target));
                     visibleTargets.Add(target);
                 }
             }
@@ -188,7 +196,6 @@ public class FieldOfView : MonoBehaviour
 
     public Vector3 FindClearPath()
     {
-        Debug.Log("obstice found");
         int stepCount = Mathf.RoundToInt(viewAngle * obsticleAvoidenceFidelity);
         float stepAngleSize = viewAngle / stepCount;
 
@@ -196,7 +203,6 @@ public class FieldOfView : MonoBehaviour
         {
             Vector3 lookDir = transform.up;
             float angle = stepAngleSize * i;
-            Debug.Log(angle);
 
             Vector3 posLookDir = Quaternion.AngleAxis(angle, Vector3.forward) * lookDir;
             Vector3 negLookDir = Quaternion.AngleAxis(angle, Vector3.back) * lookDir;
@@ -213,7 +219,6 @@ public class FieldOfView : MonoBehaviour
                 return negLookDir;
             }
         }
-        Debug.Log("no solutions found");
         return Vector3.zero;
     }
 
@@ -251,19 +256,19 @@ public class FieldOfView : MonoBehaviour
          
     }
 
-    public struct TargetInfo
-    {
-        public Transform targetTransform;
-        public Vector3 moveDir;
-        //public float dist;
+    // public struct TargetInfo
+    // {
+    //     public Transform targetTransform;
+    //     public Vector3 moveDir;
+    //     //public float dist;
 
-        public TargetInfo(Transform targetTransform_)
-        {
-            targetTransform = targetTransform_;
-            moveDir = targetTransform_.up;
-            //dist = Vector3.Distance(transform,targetTransform_);
-        }        
-    }
+    //     public TargetInfo(Transform targetTransform_)
+    //     {
+    //         targetTransform = targetTransform_;
+    //         moveDir = targetTransform_.up;
+    //         //dist = Vector3.Distance(transform,targetTransform_);
+    //     }        
+    // }
 
     public static float SignedAngleTo(Vector3 fromVector, Vector3 toVector, Vector3 relativeUp) {
      return Mathf.Atan2(

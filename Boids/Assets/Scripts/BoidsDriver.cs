@@ -23,6 +23,9 @@ public class BoidsDriver : MonoBehaviour
 
     [Header("Foce Weights")]
     public float avoidForceWeight;
+    public float seperationForceWeight;
+    public float alignmentForceWeight;
+    public float cohesionForceWeight;
 
     BoidInstance[] boids;
     Vector2 halfscreenWidthInWorldUnits;
@@ -60,21 +63,7 @@ public class BoidsDriver : MonoBehaviour
 
         foreach(BoidInstance boid in boids)
         {
-            Vector3 velocity = boid.boidObject.transform.up * moveSpeed;
-
-            if(seperation)
-                 velocity += boid.boidBehavior.seperate(boid.fov.visibleTargets) * turnRadius;
-            if (alignment)
-                velocity += boid.boidBehavior.align(boid.fov.visibleTargets) * turnRadius;
-            if(cohesion)
-                 velocity += boid.boidBehavior.cohere(boid.fov.visibleTargets) * turnRadius;
-
-            // Vector3 obsticleFreeDir = boid.fov.FindClearPath();
-
-            // velocity += obsticleFreeDir.normalized;
             UpdateBoid(boid);
-
-            //boid.boidBehavior.Move(velocity.normalized * moveSpeed);
         }
     }
 
@@ -85,7 +74,21 @@ public class BoidsDriver : MonoBehaviour
 
         if(boid.fov.visibleTargets.Count != 0)
         {
-            //do boid stuff
+            if(seperation)
+            {
+                Vector3 seperationForce = boid.boidBehavior.Seperate(boid.fov.visibleTargets) * turnRadius;
+                acceleration += seperationForce * seperationForceWeight;
+            }
+            if (alignment)
+            {
+                Vector3 alignmentForce = boid.boidBehavior.Align(boid.fov.visibleTargets) * turnRadius;
+                acceleration += alignmentForce *alignmentForceWeight;
+            }
+            if(cohesion && boid.fov.visibleTargets.Count > 0)
+            {
+                Vector3 cohesionForce = boid.boidBehavior.Cohere(boid.fov.visibleTargets) * turnRadius;
+                acceleration += cohesionForce * cohesionForceWeight;
+            }
         }
 
         if(boid.fov.HeadingForCollision())
