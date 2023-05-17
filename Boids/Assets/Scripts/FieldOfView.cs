@@ -23,6 +23,7 @@ public class FieldOfView : MonoBehaviour
     public MeshFilter viewMeshFilter;
     Mesh viewMesh;
     GameObject cahedMeshCollider;
+    public int debugCount;
 
     void Start()
     {
@@ -118,7 +119,7 @@ public class FieldOfView : MonoBehaviour
     {
         visibleTargets.Clear();
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, boidMask);//picks up colliders
-
+        debugCount = targetsInViewRadius.Length;
         for (int i=0; i<targetsInViewRadius.Length; i++)
         {
             // is picking self up as visible target. This check is complicated because the collider is not on this

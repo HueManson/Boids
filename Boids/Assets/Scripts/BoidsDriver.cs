@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoidsDriver : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class BoidsDriver : MonoBehaviour
     public bool isVisualized;
 
     public GameObject boidPrefab;
+    public Text debugText;
 
     [Header("Flock Behavior")]
     public bool seperation;
@@ -64,6 +66,7 @@ public class BoidsDriver : MonoBehaviour
         foreach(BoidInstance boid in boids)
         {
             UpdateBoid(boid);
+            debugText.text = "num targets " + boid.fov.debugCount;
         }
     }
 

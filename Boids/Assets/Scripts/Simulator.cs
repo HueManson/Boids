@@ -18,6 +18,7 @@ public class Simulator : MonoBehaviour
     public Text alignmentText;
     public Text cohesionText;
     public Text helpText;
+    public Text vizText;
     public Image textImage;
 
     Vector2 dragOffset;
@@ -40,6 +41,7 @@ public class Simulator : MonoBehaviour
         alignmentText.color = Color.red;
         cohesionText.color = Color.red;
         wallText.color = Color.red;
+        vizText.color = Color.red;
     }
 
     void Update()
@@ -118,6 +120,11 @@ public class Simulator : MonoBehaviour
             driver.cohesion = !driver.cohesion;
             cohesionText.color = driver.cohesion ? Color.green : Color.red;
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            driver.isVisualized = !driver.isVisualized;
+            vizText.color = driver.isVisualized ? Color.green : Color.red;
+        }
         if (Input.GetKeyDown(KeyCode.H))
         {
             if(toggleMenu)
@@ -128,6 +135,7 @@ public class Simulator : MonoBehaviour
                 seperationText.text = "Toggle seperation [press s]";
                 alignmentText.text =  "Toggle alignment [press a]";
                 cohesionText.text = "Toggle cohesion [press c]";
+                vizText.text = "Toggle fov [press f]";
                 textImage.enabled = true;
             }
             else
@@ -138,12 +146,11 @@ public class Simulator : MonoBehaviour
                 seperationText.text = "";
                 alignmentText.text =  "";
                 cohesionText.text = "";
+                vizText.text = "";
                 textImage.enabled = false;
             }
             toggleMenu = !toggleMenu;
         }
-
-
     }
 
     void GenerateObsticle(Vector2 position)
