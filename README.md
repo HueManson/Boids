@@ -2,7 +2,7 @@
 
 Micro Project: Create 2D boids
 
-Playable Demo: 
+Playable Demo: https://dbmanthy.github.io/Boids/
 
 Resources: http://www.cs.toronto.edu/~dt/siggraph97-course/cwr87/ https://www.youtube.com/watch?v=rQG9aUWarwE&ab_channel=SebastianLague https://www.youtube.com/watch?v=bqtqltqcQhw&ab_channel=SebastianLague
 
